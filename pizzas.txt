@@ -1,0 +1,3 @@
+{"_id": "1", "image_url": "https://source.unsplash.com/user/@st_korableva/IODFFLZyDlI/600x500", "name": "Pineapple Onion Pizza", "details": "Sweet and oniony goodness."}
+{"_id": "2", "image_url": "https://soyummy.com/wp-content/uploads/2017/08/Smores_Pizza_Still-Edit-e1504050093977.jpg", "name": "Smore's Pizza", "details": "Who said you needed a campfire to get a tasty camping expereince?"}
+{"_id": "3", "image_url": "https://truffle-assets.imgix.net/c10418e8-ice-cream-dessert-pizza-thumbnail-l.png", "name": "Icecream Pizza", "details": "World class icecream meets world class cookies."}
