@@ -13,21 +13,25 @@ app.secret_key = os.environ.get('SECRET_KEY')
 
 @app.route('/')
 def pizzas_index():
+    '''Renders the landing page'''
     if 'anonymous-cart' not in session:
         session['anonymous-cart'] = {}
     return render_template('index.html')
 
 @app.route('/shop')
 def pizzas_shop():
+    '''Renders the shop page with avalable pizzas from mongodb database'''
     return render_template('pizzas_shop.html', pizzas=pizzas.find({}))
 
 @app.route('/cart')
 def pizzas_cart():
+    '''Renders the users cart which contains the users selected pizzas and the quantity of each'''
     cart = get_cart()
     return render_template('pizzas_cart.html', cart=cart)
 
 @app.route('/add_pizza', methods=['POST'])
 def pizzas_add():
+    '''Uploads pizzas\' _id to users cart'''
     if 'anonymous-cart' in session:
         cart = session['anonymous-cart']
         print(cart)
@@ -42,6 +46,7 @@ def pizzas_add():
 
 @app.route('/update_cart', methods=['POST'])
 def pizzas_update_cart():
+    '''Updates selected pizzas amount in users\' cart'''
     if 'anonymous-cart' in session:
         session_cart = session['anonymous-cart']
         if int(request.form.get('quantity')) <= 0:
@@ -54,6 +59,7 @@ def pizzas_update_cart():
     return redirect(url_for('pizzas_cart', pizzas=document_cart))
 
 def get_cart():
+    '''A helper function for getting the user's cart from cookies or mongodb'''
     if 'anonymous-cart' in session:
         session_cart = session['anonymous-cart']
         cart = {}
