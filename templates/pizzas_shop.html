@@ -1,7 +1,17 @@
 {% extends 'base.html' %}
-{% block content %} 
+{% block content %}
     <h1>Pizzas</h1>
+    <a class="btn" href="/">Go back</a>
     {% for pizza in pizzas %}
-        <p>pizza.name</p>
+        <div class="pizza_item">
+            <img src="{{pizza.image_url}}" alt="">
+            <h5>{{ pizza.name }}</h5>
+            <p>{{ pizza.details }}</p>
+            <form method="POST" action="/add_pizza">
+                <input type="hidden" name="_id" value="{{ pizza._id }}">
+                <input type="number" name="quantity">
+                <button type="submit">Add</button>
+            </form>
+        </div>
     {% endfor %}
 {% endblock %}
