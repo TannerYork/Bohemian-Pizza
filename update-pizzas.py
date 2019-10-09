@@ -7,7 +7,7 @@ db = client.PizzaStore
 pizzas = db.pizzas
 pizzas.delete_many({})
 
-pizzas_file = open('scripts/pizzas.txt', 'r')
+pizzas_file = open('pizzas.txt', 'r')
 pizza_documents = pizzas_file.readlines()
 for line in pizza_documents:
     pizza_json = json.loads(line)
