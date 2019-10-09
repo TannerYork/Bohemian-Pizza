@@ -1,4 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1>Bohemian Pizza</h1>
+    {% if user %}
+        <form method="POST" action="/user-logout">
+            <button type="submit">Logout</button>
+        </form>
+    {% else %}
+        <a href="/login">Login</a>
+    {% endif %}
 {% endblock %}
