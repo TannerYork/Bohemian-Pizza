@@ -9,6 +9,7 @@ client = MongoClient()
 db = client.PizzaStore
 pizzas = db.pizzas
 users = db.users
+carts = db.carts
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
 
@@ -36,28 +37,43 @@ def pizzas_cart():
 @app.route('/add_pizza', methods=['POST'])
 def pizzas_add():
     '''Uploads pizzas\' _id to users cart'''
+    pizza_id = request.form.get('_id')
+    quantity = int(request.form.get('quantity'))
     if 'anonymous-cart' in session:
         cart = session['anonymous-cart']
-        pizza_id = str(request.form.get('_id'))
-        quantity = int(request.form.get('quantity'))
         if pizza_id in cart:
             for _ in range(0, quantity): cart[pizza_id] += 1
         else:
             cart.update({pizza_id: quantity})
         session['anonymous-cart'] = cart
+    elif 'user' in session:
+        user_id = session['user']['_id']
+        cart = carts.find_one({'_id': user_id})
+        if pizza_id in cart:
+            carts.update_one({'_id': user_id}, {'$inc': {pizza_id: quantity}})
+        else:
+            carts.update_one({'_id': user_id}, {'$set': {pizza_id: quantity}})
     return redirect(url_for('pizzas_shop'))
 
 @app.route('/update_cart', methods=['POST'])
 def pizzas_update_cart():
     '''Updates selected pizzas amount in users\' cart'''
+    pizza_id = request.form.get('_id')
+    quantity = int(request.form.get('quantity'))
     if 'anonymous-cart' in session:
         session_cart = session['anonymous-cart']
-        if int(request.form.get('quantity')) <= 0:
-            del session_cart[request.form.get('_id')]
+        if quantity <= 0:
+            del session_cart[pizza_id]
         else:
-            pizza = { request.form.get('_id'): int(request.form.get('quantity')) }
+            pizza = { pizza_id: quantity }
             session_cart.update(pizza)
         session['anonymous-cart'] = session_cart
+    elif 'user' in session:
+        user_id = session['user']['_id']
+        if quantity <= 0:
+            carts.update_one({'_id': user_id}, {'$unset': {pizza_id: 1}})
+        else:
+            carts.update_one({'_id': user_id}, {'$set': {pizza_id: quantity}})
     return redirect(url_for('pizzas_cart'))
 
 @app.route('/login')
@@ -73,7 +89,7 @@ def user_login():
     encoded_pass = request.form.get('password').encode('utf-8')
     if user and bcrypt.checkpw(encoded_pass, user['password']):
         session.clear()
-        session['user'] = { 'display_name': user['display_name'], 'email': user['email']}
+        session['user'] = { '_id': str(user['_id']), 'display_name': user['display_name'], 'email': user['email']}
         return redirect(url_for('pizzas_index'))
     return render_template('pizzas_login.html', error=True)
 
@@ -104,6 +120,8 @@ def user_registure():
         users.insert_one(user)
         return redirect(url_for('pizzas_login'))
 
+
+### Helper Functions ###
 def get_cart():
     '''A helper function for getting the user's cart from cookies or mongodb'''
     if 'anonymous-cart' in session:
@@ -113,8 +131,17 @@ def get_cart():
             cart.update({ key: pizzas.find_one({ '_id': key }) })
             cart[key].update({ 'quantity': session_cart[key] })
         return cart
-    else:
-        return []
+    elif 'user' in session:
+        user_cart = carts.find_one({'_id': session['user']['_id']})
+        if user_cart:
+            cart = {}
+            for key in user_cart:
+                if key != '_id':
+                    cart.update({ key: pizzas.find_one({ '_id': key }) })
+                    cart[key].update({ 'quantity': user_cart[key] })
+            return cart
+        carts.insert_one({'_id': session['user']['_id']})
+        return {}
 
 
 if __name__ == '__main__':
