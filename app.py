@@ -122,10 +122,54 @@ def user_registure():
         return redirect(url_for('pizzas_login'))
 
 @app.route('/pizzas/<pizza_id>')
-def pizzas_comment(pizza_id):
+def pizzas_show(pizza_id):
     '''Renters information for a specific pizza'''
     pizza = pizzas.find_one({'_id': pizza_id})
-    return render_template('pizzas_show.html', pizza=pizza)
+    if 'user' in session:
+        user_comment = comments.find_one({'pizza_id': pizza_id, 'user_id': session['user']['_id']})
+        return render_template('pizzas_show.html', pizza=pizza, user=True, comment=user_comment, comments=comments.find({'pizza_id': pizza_id}))
+    return render_template('pizzas_show.html', pizza=pizza, comments=comments.find({'pizza_id': pizza_id}))
+
+@app.route('/add-comment/<pizza_id>', methods=["POST"])
+def add_commnet(pizza_id):
+    '''Uploads a commment/rating to the mongodb database'''
+    if 'user' in session:
+        comment = {
+            'pizza_id': pizza_id,
+            'user_id': session['user']['_id'],
+            'details': request.form.get('details'),
+            'rating': request.form.get('rating'),
+            'timestamp': datetime.now()
+        }
+        comment_exist = comments.find_one({'pizza_id': pizza_id, 'user_id': comment['user_id']})
+        if comment_exist:
+            return redirect(url_for('pizzas_show', pizza_id=pizza_id))
+        else:
+            comments.insert_one(comment)
+            return redirect(url_for('pizzas_show', pizza_id=pizza_id))
+    return redirect(url_for('pizzas_show', pizza_id=pizza_id))
+
+@app.route('/update-comment/<pizza_id>', methods=["POST"])
+def update_commnet(pizza_id):
+    '''Uploads a commment/rating to the mongodb database'''
+    if 'user' in session:
+        comment = {
+            'pizza_id': pizza_id,
+            'user_id': session['user']['_id'],
+            'details': request.form.get('details'),
+            'rating': request.form.get('rating'),
+            'timestamp': datetime.now()
+        }
+        comments.update({'user_id': comment['user_id'], 'pizza_id': pizza_id}, comment)
+    return redirect(url_for('pizzas_show', pizza_id=pizza_id))
+
+@app.route('/delete-comment/<pizza_id>')
+def delete_comment(pizza_id):
+    '''Removes user\'s comment from specific pizza'''
+    if 'user' in session:
+        comments.delete_one({'pizza_id': pizza_id, 'user_id': session['user']['_id']})
+    return redirect(url_for('pizzas_show', pizza_id=pizza_id))
+
 
 ### Helper Functions ###
 def get_cart():

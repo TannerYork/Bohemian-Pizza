@@ -4,5 +4,44 @@
         <img src="{{pizza['image_url']}}">
         <h2>{{pizza['name']}}</h2>
         <h5>{{pizza['details']}}</h5>
+        {% if user and comment %}
+        <div class="user_comment">
+            <form method="POST" action="/update-comment/{{pizza['_id']}}">
+                <div class="form-row">
+                    <label>Rating</label>
+                    <input type="number" name="rating" value="{{comment['rating']}}">
+                </div>
+                <div class="form-row">
+                    <label>Details</label>
+                    <textarea name="details">{{comment['details']}}</textarea>
+                </div>
+                <div class="form-row buttons">
+                    <button type="submit">Update</button>
+                </div>
+            </form>
+           <a href="/delete-comment/{{pizza['_id']}}">Delete</a>
+        </div>
+        {% elif user %}
+            <form method="POST" action="/add-comment/{{pizza['_id']}}">
+                <div class="form-row">
+                    <label>Rating</label>
+                    <input type="number" name="rating" value="{{comment['rating']}}">
+                </div>
+                <div class="form-row">
+                    <label>Details</label>
+                    <textarea name="details"></textarea>
+                </div>
+                <div class="form-row buttons">
+                    <button type="submit">Enter</button>
+                </div>
+            </form>            
+        {% endif %}
+        {% for comment in comments %}
+            <div class="comment">
+                <h4>{{comment.rating}}</h4>
+                <small>{{comment.timestamp.strftime('%m/%d/%Y')}}</small>
+                <p>{{comment.details}}</p>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
