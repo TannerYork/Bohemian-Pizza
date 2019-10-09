@@ -10,6 +10,7 @@ db = client.PizzaStore
 pizzas = db.pizzas
 users = db.users
 carts = db.carts
+comments = db.comments
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
 
@@ -120,6 +121,11 @@ def user_registure():
         users.insert_one(user)
         return redirect(url_for('pizzas_login'))
 
+@app.route('/pizzas/<pizza_id>')
+def pizzas_comment(pizza_id):
+    '''Renters information for a specific pizza'''
+    pizza = pizzas.find_one({'_id': pizza_id})
+    return render_template('pizzas_show.html', pizza=pizza)
 
 ### Helper Functions ###
 def get_cart():

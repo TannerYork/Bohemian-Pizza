@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="pizzas_show">
+        <img src="{{pizza['image_url']}}">
+        <h2>{{pizza['name']}}</h2>
+        <h5>{{pizza['details']}}</h5>
+    </div>
+{% endblock %}
