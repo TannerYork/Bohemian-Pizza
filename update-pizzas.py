@@ -1,9 +1,12 @@
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import json
+import os
 
-client = MongoClient()
-db = client.PizzaStore
+db_password = os.environ.get('HEROKU_PASS')
+host = os.environ.get('MONGODB_URI', f'mongodb://<bohemian-pizza-bot>:<{db_password}>@ds233288.mlab.com:33288/heroku_k546mx0r')
+client = MongoClient(host=f'{host}?retryWrites=false')
+db = client.get_default_database()
 pizzas = db.pizzas
 pizzas.delete_many({})
 
