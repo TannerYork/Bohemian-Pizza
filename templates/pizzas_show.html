@@ -9,7 +9,7 @@
                 <form method="POST" action="/update-comment/{{pizza['_id']}}">
                     <div class="form-row">
                         <label>Rating</label>
-                        <input type="number" name="rating" value="{{comment['rating']}}">
+                        <input type="number" name="rating" value="{{comment['rating']}}" min="1" max="5">
                     </div>
                     <div class="form-row">
                         <label>Details</label>
