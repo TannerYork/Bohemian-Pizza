@@ -28,7 +28,8 @@ def pizzas_index():
 def pizzas_cart():
     '''Renders the users cart which contains the users selected pizzas and the quantity of each'''
     cart = get_cart()
-    return render_template('pizzas_cart.html', cart=cart)
+    if 'user' in session: return render_template('pizzas_cart.html', cart=cart, user=session['user'])
+    else : return render_template('pizzas_cart.html', cart=cart)
 
 @app.route('/add_pizza', methods=['POST'])
 def pizzas_add():
