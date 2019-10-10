@@ -7,7 +7,7 @@
             <form method="POST" action="/add_pizza">
                 <input type="hidden" name="_id" value="{{ pizza._id }}">
                 <div class="pizza_amount">
-                    <input type="number" name="quantity" min="1"><button type="submit">Add</button>
+                    <input type="number" name="quantity" min="1" required><button type="submit">Add</button>
                 </div>
             </form>
         </div>
