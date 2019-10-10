@@ -19,14 +19,9 @@ app.secret_key = os.environ.get('SECRET_KEY')
 def pizzas_index():
     '''Renders the landing page'''
     if 'user' in session:
-        return render_template('index.html', user=session['user'])
+        return render_template('pizzas_shop.html', pizzas=pizzas.find({}), user=session['user'])
     elif 'anonymous-cart' not in session:
         session['anonymous-cart'] = {}
-    return render_template('index.html')
-
-@app.route('/shop')
-def pizzas_shop():
-    '''Renders the shop page with avalable pizzas from mongodb database'''
     return render_template('pizzas_shop.html', pizzas=pizzas.find({}))
 
 @app.route('/cart')
@@ -54,7 +49,7 @@ def pizzas_add():
             carts.update_one({'_id': user_id}, {'$inc': {pizza_id: quantity}})
         else:
             carts.update_one({'_id': user_id}, {'$set': {pizza_id: quantity}})
-    return redirect(url_for('pizzas_shop'))
+    return redirect(url_for('pizzas_index'))
 
 @app.route('/update_cart', methods=['POST'])
 def pizzas_update_cart():
@@ -94,7 +89,7 @@ def user_login():
         return redirect(url_for('pizzas_index'))
     return render_template('pizzas_login.html', error=True)
 
-@app.route('/user-logout', methods=["POST"])
+@app.route('/user-logout')
 def user_logout():
     '''Logout user'''
     if 'user' in session: del session['user']

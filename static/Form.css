@@ -1,0 +1,67 @@
+.login, .registure {
+    height: 100%;
+    padding-top: 30px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login header, .registure header {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login header h1, .registure header h1 {
+    font-size: 50px;
+}
+
+.login form, .registure form {
+    width: 300px;
+    height: 500px;
+    padding: 10px;
+}
+
+.login form p {
+    text-align: center;
+}
+
+.registure form a {
+    text-decoration: none;
+    color: #7adee9;
+}
+
+.login form p a, .registure form p a{ 
+    color: #7adee9;
+    text-decoration: none;
+}
+
+.form-row {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-row label {
+    font-size: 20px;
+}
+
+.form-row input, button {
+    background-color: #f0eeee;
+    border: none;
+    padding: 10px;
+    font-size: 100%;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.form-row button {
+    background-color: #7adee9;
+}

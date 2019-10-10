@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="pizzas_registure">
-        <h2>Registure</h2>
-        {% if user_exist %}
-            <div class="error"><p>That email is alread used</p></div>
-        {% endif %}
+    <div class="registure">
+        <header>
+            <h1>Registure</h1>
+        </header>
         <form method="POST" action="/user-registure">
+            {% if user_exist %}
+                <div class="error"><p>That email is alread used</p></div>
+            {% endif %}
             <div class="form-row">
                 <label>User Name</label>
                 <input type="text" name="display_name" required>
@@ -21,7 +23,7 @@
             <div class="form-row">
                 <button type="submit">Enter</button>
             </div>
+            <a href="/login">Return to login</a>
         </form>
-        <a href="/login">Back</a>
     </div>
 {% endblock %}

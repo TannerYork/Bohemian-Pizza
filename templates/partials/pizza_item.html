@@ -1,0 +1,14 @@
+<div class="pizza_item">
+        <a href="/pizzas/{{pizza._id}}">
+            <img src="{{pizza.image_url}}" alt="">
+        </a>
+        <div class="pizza_info">
+            <h1>{{ pizza.name }}</h1>
+            <form method="POST" action="/add_pizza">
+                <input type="hidden" name="_id" value="{{ pizza._id }}">
+                <div class="pizza_amount">
+                    <input type="number" name="quantity"><button type="submit">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>

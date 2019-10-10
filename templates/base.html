@@ -3,13 +3,41 @@
     <head>
         <title>Bohemian Pizza</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     </head>
     <body>
-        <div class="nav">
-            <h1 class="logo">Bohemian Pizza</h1>
-            <a href="/shop">Shop Pizzas</a>
-            <a href="/cart">Cart</a>
+        <header class="sidebar-nav">
+            <div class="nav-top">
+                <a class="logo">
+                    <h2 class="logo">Bohemian Pizza</h2>
+                </a>
+            </div>
+            <div class=nav-middle>
+                <div class="nav-item">
+                    <a href="/" title="Shop">
+                        <img src="/static/images/pizza-dribbble-icon.png">
+                        <h4>Shop</h4>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="/cart" title="Cart">
+                        <img class="small" src="/static/images/pizza-box-clipart.jpg">
+                        <h4>Cart</h4>
+                    </a>
+                </div>
+                {% if user %}
+                    <div class="nav-item">
+                         <a href="/user-logout"><h4>Logout</h4></a>
+                    </div>
+                {% else %}
+                    <div class="nav-item">
+                        <a href="/login"><h4>Login</h4></a>
+                    </div>
+                {% endif %}
+            </div>
+        </header>
+        <div class="page">
+            {% block content %}{% endblock %}
         </div>
-        {% block content %}{% endblock %}
     </body>
 </html>

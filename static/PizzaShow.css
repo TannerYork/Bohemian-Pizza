@@ -1,0 +1,87 @@
+.pizza_show {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pizza_show img {
+    width: 100%;
+    height: 600px;
+    border-radius: 10px;
+}
+
+.pizza_show h1 {
+    background-color: rgb(254, 252, 252);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 60px;
+}
+
+.pizza_show form {
+    display: flex;
+    flex-direction: row;
+}
+
+.pizza_show form .form-row{
+    width: 200px;
+    height: 75px;
+    margin-right: 10px;
+}
+
+.pizza_show form .form-row-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around
+}
+
+.pizza_show form .form-row-buttons a { 
+    text-decoration: none;
+    padding: 10px;
+    margin-top: 25px;
+    background-color: #7adee9;
+    border-radius: 10px;
+    color: #333;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pizza_show form button {
+    width: 75px;
+    margin-top: 25px;
+}
+
+.pizza_ratings {
+    width: 100%;
+    padding: 10px;
+}
+
+.pizza_comment {
+    background-color: #fac260;
+    border-radius: 10px;
+    width: 200px;
+    height: 100px;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.pizza_comment * {
+    padding: 5px;
+}
+
+.pizza_rating_amount {
+    display: flex;
+}
+
+.pizza_rating {
+    background-image: url('/static/images/bake-bread-fast-food-pizza.svg');
+    background-size: 100%;
+    width: 20px;
+    height: 20px;
+}

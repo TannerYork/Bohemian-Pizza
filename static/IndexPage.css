@@ -1,0 +1,10 @@
+.index-drone-image {
+    width: 400px;
+    height: 400px;
+    transform: rotate(-20deg);
+}
+
+.index-pizza-image {
+    width: 100px;
+    height: 100px;
+}

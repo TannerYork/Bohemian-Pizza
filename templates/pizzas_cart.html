@@ -1,18 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="pizza_cart">
-        {% for key in cart %}
-            {% if key != '_id' %}
-                <div class="pizza_item">
-                    <img src="{{ cart[key].image_url }}" alt="">
-                    <h5>{{ cart[key].name }}</h5>
-                    <form method="POST" action="/update_cart">
-                        <input type="hidden" name="_id" value="{{ cart[key]._id }}">
-                        <input type="number" name="quantity" value="{{ cart[key].quantity }}">
-                        <button type="submit">Update</button>
-                    </form>
-                </div>
-            {% endif %}
-        {% endfor %}
+        {% if cart| length == 0 %}
+            <header>
+                <h1>Cart is Empty</h1>
+            </header>
+        {% else %}
+            {% for key in cart %}
+                {% if key != '_id' %}
+                    <div class="pizza_item">
+                        <a href="/pizzas/{{cart[key]['_id']}}">
+                            <img src="{{cart[key]['image_url']}}" alt="">
+                        </a>
+                        <div class="pizza_info">
+                            <h1>{{ cart[key]['name'] }}</h1>
+                            <form method="POST" action="/update_cart">
+                                <div class="pizza_amount">
+                                    <input type="hidden" value="{{cart[key]['_id']}}">
+                                    <input type="number" name="quantity" value="{{cart[key]['quantity']}}"><button type="submit">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     </div>
 {% endblock %}

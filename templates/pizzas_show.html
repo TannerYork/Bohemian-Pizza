@@ -1,26 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="pizzas_show">
+    <div class="pizza_show">
         <img src="{{pizza['image_url']}}">
-        <h2>{{pizza['name']}}</h2>
-        <h5>{{pizza['details']}}</h5>
+        <h1>{{pizza['name']}}</h1>
+        <h2>{{pizza['details']}}</h2>
         {% if user and comment %}
-        <div class="user_comment">
-            <form method="POST" action="/update-comment/{{pizza['_id']}}">
-                <div class="form-row">
-                    <label>Rating</label>
-                    <input type="number" name="rating" value="{{comment['rating']}}">
-                </div>
-                <div class="form-row">
-                    <label>Details</label>
-                    <textarea name="details">{{comment['details']}}</textarea>
-                </div>
-                <div class="form-row buttons">
-                    <button type="submit">Update</button>
-                </div>
-            </form>
-           <a href="/delete-comment/{{pizza['_id']}}">Delete</a>
-        </div>
+            <div class="user_comment">
+                <form method="POST" action="/update-comment/{{pizza['_id']}}">
+                    <div class="form-row">
+                        <label>Rating</label>
+                        <input type="number" name="rating" value="{{comment['rating']}}">
+                    </div>
+                    <div class="form-row">
+                        <label>Details</label>
+                        <input type="text" name="details"></input>
+                    </div>
+                    <div class="form-row form-row-buttons">
+                        <button type="submit">Update</button>
+                        <a href="/delete-comment/{{pizza['_id']}}">Delete</a>
+                    </div>
+                </form>
+            </div>
         {% elif user %}
             <form method="POST" action="/add-comment/{{pizza['_id']}}">
                 <div class="form-row">
@@ -29,19 +29,28 @@
                 </div>
                 <div class="form-row">
                     <label>Details</label>
-                    <textarea name="details"></textarea>
+                    <input type="text" name="details"></input>
                 </div>
-                <div class="form-row buttons">
+                <div class="form-row">
+                    <label></label>
                     <button type="submit">Enter</button>
                 </div>
             </form>            
         {% endif %}
-        {% for comment in comments %}
-            <div class="comment">
-                <h4>{{comment.rating}}</h4>
-                <small>{{comment.timestamp.strftime('%m/%d/%Y')}}</small>
-                <p>{{comment.details}}</p>
-            </div>
-        {% endfor %}
+        <div class="pizza_ratings">
+            <h2>Ratings</h2><br>
+            {% for comment in comments %}
+                {% set rating=comment['rating'] | int %}
+                <div class="pizza_comment">
+                    <div class="pizza_rating_amount">
+                        {% for index in range(0, rating) %}
+                            <div class="pizza_rating"></div>
+                        {% endfor %}
+                    </div>
+                    <small>{{comment.timestamp.strftime('%m/%d/%Y')}}</small>
+                    <p>{{comment.details}}</p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
